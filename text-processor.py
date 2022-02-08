@@ -1,17 +1,16 @@
 import json
 import spacy
 
+nlp = spacy.load("en_core_web_sm")
+
 '''
 Tokenizer method
 '''
 def tokenizer(input_string):
-    nlp = spacy.load("en_core_web_sm")
     doc = nlp(input_string.lower().replace("\n", " "))
-    lemmas = []
-    for token in doc:
-        if token.is_stop or token.is_punct or token.is_space:
-            continue
-        lemmas.append(token.lemma_)
+    tokens_no_stop = [word for word in doc if not word.is_stop and not word.is_punct]
+    lemmas = [token.lemma_ for token in tokens_no_stop if token.dep_]
+    print(lemmas)
     return lemmas
 
 
